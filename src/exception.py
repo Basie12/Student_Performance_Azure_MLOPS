@@ -29,7 +29,7 @@ class CustomException(Exception):
         super().__init__(error_message)
         self.error_message = error_message_detail(error_message, error_detail)
         
-        # integrate with your logger
+        # Optionally log the error (integrate with your logger)
         logging.error(self.error_message)
 
     def __str__(self):
@@ -37,3 +37,12 @@ class CustomException(Exception):
 
     def __repr__(self):
         return f"CustomException({self.error_message})"
+
+# Example usage (runs only if executed directly, for testing)
+if __name__ == "__main__":
+    try:
+        # Simulate an error
+        division_by_zero = 1 / 0
+    except Exception as e:
+        custom_exc = CustomException("Division by zero error occurred", sys.exc_info())
+        raise custom_exc
