@@ -7,8 +7,12 @@ from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
 from src.components.data_transformation import DataTransformation
-# from src.components.data_transformation import DataTransformationConfig  # Re-import if needed
-from src.components.model_trainer import ModelTrainerConfig, ModelTrainer  # Fixed typo
+# from src.components.data_transformation import DataTransformationConfig 
+from src.components.model_trainer import ModelTrainerConfig, ModelTrainer  
+
+import multiprocessing
+# multiprocessing.set_start_method('spawn')
+# multiprocessing.set_start_method('forkserver')
 
 @dataclass
 class DataIngestionConfig:
@@ -53,6 +57,7 @@ class DataIngestion:
             raise CustomException(e, sys)
 
 if __name__ == "__main__":
+    multiprocessing.set_start_method('spawn')
     obj = DataIngestion()
     try:
         train_data, test_data = obj.initiate_data_ingestion()
