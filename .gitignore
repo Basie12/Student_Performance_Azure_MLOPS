@@ -137,6 +137,7 @@ celerybeat.pid
 # Environments
 # Ignore the artifact directory and its contents
 artifact/
+catboost_info/
 .env
 .envrc
 .venv
