@@ -1,10 +1,13 @@
 import os
-import sys 
+import sys
 from src.exception import CustomException
 from src.logger import logging
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+
+from src.components.data_transformation import DataTransformation
+# Removed unused import for DataTransformationConfig (add back if needed)
 
 @dataclass
 class DataIngestionConfig:
@@ -19,8 +22,14 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("Entered the data ingestion method")
         try:
-            df = pd.read_csv('notebook/data/StudentsPerformance.csv')  # Adjust path as needed
-            logging.info('Read the dataset as a dataframe')
+            # Use os.path.join for better path handling
+            dataset_path = os.path.join('notebook', 'data', 'StudentsPerformance.csv')
+            df = pd.read_csv(dataset_path)  # Adjust if needed
+            logging.info(f'Read the dataset as a dataframe from {dataset_path}')
+            
+            # Clean column names: replace spaces and slashes with underscores, and convert to lowercase
+            df.columns = df.columns.str.replace(" ", "_").str.lower()
+            df.columns = df.columns.str.replace("/", "_").str.lower()
             
             # Create directories for all paths
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
@@ -42,4 +51,8 @@ class DataIngestion:
 
 if __name__ == "__main__":
     obj = DataIngestion()
-    obj.initiate_data_ingestion()
+    train_data, test_data = obj.initiate_data_ingestion()
+    
+    data_transformation = DataTransformation()
+    train_arr, test_arr, preprocessor_path = data_transformation.initiate_data_transformation(train_data, test_data)
+    logging.info(f"Data transformation completed. Preprocessor saved at {preprocessor_path}")
