@@ -5,6 +5,6 @@ scikit-learn>=1.5.1
 seaborn
 matplotlib
 catboost
-xgboost
+xgboost-cpu>=2.1.1
 dill
 -e .
