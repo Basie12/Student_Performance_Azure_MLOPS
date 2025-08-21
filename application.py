@@ -4,7 +4,6 @@ from src.pipelines.predict_pipeline import CustomData, PredictPipeline
 from src.exception import CustomException
 from src.logger import logging
 
-from flask import Flask
 application = Flask(__name__)
 app = application
 
